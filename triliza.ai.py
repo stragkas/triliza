@@ -8,6 +8,18 @@ board = [
         [" ", " ", " "]
     ]
 
+def check_draw():
+    danger = 0
+    for j in range(3):
+        for i in range(3):
+            if board[i][j] != " ":
+                danger += 1
+    if danger == 9:
+        print("DRAW")
+        return False
+    else:
+        return True
+
 def check_win():
     # first player
     if board[0] == [player1, player1, player1]:
@@ -131,7 +143,7 @@ def check_diag_win():
         return [2, 0]
     elif board[0][2] == player2 and board[2][0] == player2:
         return [1, 1]
-    elif board[1][1] == player2 and board[2][0] == player2:
+    elif board[2][0] == player2 and board[1][1] == player2:
         return [0, 2]
     else:
         return 0
@@ -172,6 +184,7 @@ def computer_play_easy():
     for i in range(3):
         for j in range(3):
             if board[i][j] == " ":
+                print("another block open")
                 sq.append([i,j])
     return sq[randrange(len(sq))]
 
@@ -213,8 +226,8 @@ def computer_play_hard():
     else:
         return checked1
 
-    checked3 = check_diag()
     checked6 = check_diag_win()
+    checked3 = check_diag()
 
     if checked6 == 0:
         pass
@@ -229,6 +242,7 @@ def computer_play_hard():
 
     checked2 = check_cols()
     checked7 = check_cols_win()
+
     if checked7 == 0:
         pass
     else:
@@ -266,8 +280,12 @@ def plays():
     board[player1_col][player1_row] = player1
     print_board()
 
-    if check_win() == False:
-        return
+
+    if check_draw() == False:
+        return None
+    elif check_win() == False:
+        return None
+
 
     #second play
     if level == "0":
@@ -289,8 +307,10 @@ def plays():
             board[numbers[0]][numbers[1]] = player2
 
     print_board()
-    if check_win() == False:
-        return
+    if check_draw() == False:
+        return None
+    elif check_win() == False:
+        return None
 
 
 while True:
